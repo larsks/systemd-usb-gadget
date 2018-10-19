@@ -5,8 +5,22 @@ This implements the procedure described in the Kernel's
 
 ## Installation
 
-Running `make install` in the source directory will place the support
-scripts into `/sbin` and the systemd unit into `/etc/systemd/system`.
+1. Enable the appropriate device overlays.  If you plan to use your
+   USB port as both a host and a gadget, then enable OTG mode by
+   adding the following to `/boot/config.txt`:
+
+         dtoverlay=dwc2,dr_mode=otg
+
+   If you will be operating exclusively as a gadget, then instead use:
+
+         dtoverlay=dwc2,dr_mode=peripheral
+
+   After editing `/boot/config.txt`, you must reboot for the changes
+   to become active.
+
+1. Run `make install` in the source directory, which will place the
+   support scripts into `/sbin` and the systemd unit into
+   `/etc/systemd/system`.
 
 ## Configuration
 
