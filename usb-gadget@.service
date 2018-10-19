@@ -1,5 +1,6 @@
 [Unit]
 Description=USB Gadget %I
+ConditionPathIsDirectory=/sys/kernel/config/usb_gadget
 
 [Service]
 Environment=USB_IDVENDOR=0x1d6b
