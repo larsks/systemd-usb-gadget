@@ -3,14 +3,6 @@ Description=USB Gadget %I
 ConditionPathIsDirectory=/sys/kernel/config/usb_gadget
 
 [Service]
-Environment=USB_IDVENDOR=0x1d6b
-Environment=USB_IDPRODUCT=0x0104
-Environment=USB_BCDDEVICE=0x0100
-Environment=USB_BCDUSB=0x0200
-Environment=USB_SERIALNUMBER=deadbeef0000
-Environment=USB_PRODUCT="Pi Zero Gadget"
-Environment=USB_MANUFACTURER="Linux"
-Environment=USB_MAXPOWER=250
 EnvironmentFile=/etc/gadget/%i.conf
 RemainAfterExit=yes
 ExecStart=/sbin/configure-gadget %i

@@ -3,6 +3,18 @@
 SYSDIR=/sys/kernel/config/usb_gadget/
 DEVDIR=$SYSDIR/$1
 
+# These are the default values that will be used if you have not provided
+# an explicit value in the environment.
+: ${USB_IDVENDOR:=0x1d6b}
+: ${USB_IDPRODUCT:=0x0104}
+: ${USB_BCDDEVICE:=0x0100}
+: ${USB_BCDUSB:=0x0200}
+: ${USB_SERIALNUMBER:=deadbeef0000}
+: ${USB_PRODUCT:="Pi Zero Gadget"}
+: ${USB_MANUFACTURER:="Linux"}
+: ${USB_MAXPOWER:=250}
+: ${USB_CONFIG:=conf.1}
+
 echo "Creating USB gadget $1"
 
 mkdir -p $DEVDIR
@@ -17,13 +29,13 @@ echo "$USB_SERIALNUMBER" > $DEVDIR/strings/0x409/serialnumber
 echo "$USB_MANUFACTURER"        > $DEVDIR/strings/0x409/manufacturer
 echo "$USB_PRODUCT"   > $DEVDIR/strings/0x409/product
  
-mkdir -p $DEVDIR/configs/c.1
-echo $USB_MAXPOWER > $DEVDIR/configs/c.1/MaxPower
+mkdir -p $DEVDIR/configs/$USB_CONFIG
+echo $USB_MAXPOWER > $DEVDIR/configs/$USB_CONFIG/MaxPower
 
 for func in $USB_FUNCTIONS; do
 	echo "Adding function $func to USB gadget $1"
 	mkdir -p $DEVDIR/functions/$func
-	ln -s $DEVDIR/functions/$func $DEVDIR/configs/c.1/
+	ln -s $DEVDIR/functions/$func $DEVDIR/configs/$USB_CONFIG
 done
  
 udevadm settle -t 5 || :
