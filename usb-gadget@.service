@@ -5,7 +5,7 @@ ConditionPathIsDirectory=/sys/kernel/config/usb_gadget
 [Service]
 EnvironmentFile=/etc/gadget/%i.conf
 RemainAfterExit=yes
-ExecStart=/sbin/modprobe libcomposite
+ExecStartPre=/sbin/modprobe libcomposite
 ExecStart=/sbin/configure-gadget %i
 ExecStop=/sbin/remove-gadget %i
 
