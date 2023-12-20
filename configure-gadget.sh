@@ -34,8 +34,23 @@ echo $USB_MAXPOWER > $DEVDIR/configs/$USB_CONFIG/MaxPower
 
 for func in $USB_FUNCTIONS; do
 	echo "Adding function $func to USB gadget $1"
-	mkdir -p $DEVDIR/functions/$func
-	ln -s $DEVDIR/functions/$func $DEVDIR/configs/$USB_CONFIG
+	FUNC_DIR=$DEVDIR/functions/$func
+	mkdir -p $FUNC_DIR
+	ln -s $FUNC_DIR $DEVDIR/configs/$USB_CONFIG
+
+	func_params_var=$(echo $func | tr '.' '_')
+	if ! declare -p $func_params_var 2> /dev/null; then
+		echo "No parameters defined for $func"
+		continue
+	fi
+
+	declare -n func_params=$func_params_var
+
+	for param in "${func_params[@]}"; do
+		key=${param%%=*}
+		value=${param##*=}
+		echo $value > $FUNC_DIR/$key
+	done
 done
  
 udevadm settle -t 5 || :

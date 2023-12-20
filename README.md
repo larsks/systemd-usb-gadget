@@ -34,6 +34,7 @@ These files **must** contain the following configuration keys:
 
 These files **may** contain any of the following configuration keys:
 
+- `<func>` -- List of parameters of the function implemented by the gadget. Replace the dot with an underscore.
 - `USB_IDVENDOR` -- Vendor ID. Defaults to `0x1b6d`, the Linux
   Foundation.
 - `USB_IDPRODUCT` -- Product ID. Defaults to `0x0104`, "Multifunction
@@ -51,11 +52,23 @@ For example, to create a serial gadget named `g0`, I would create the
 file `/etc/gadget/g0.conf` with the following contents:
 
     USB_FUNCTIONS=acm.usb0
+    acm_usb0=(
+      "param1=value1"
+      "param2=value2"
+    )
 
 Or to create a gadget that offered both a serial interface and an
 ethernet interface:
 
     USB_FUNCTIONS="acm.usb0 rndis.usb0"
+    acm_usb0=(
+      "param1=value1"
+      "param2=value2"
+    )
+    rndis_usb0=(
+      "param1=value1"
+      "param2=value2"
+    )
 
 To enable the gadget at boot, run:
 
